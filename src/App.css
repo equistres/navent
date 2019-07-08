@@ -156,7 +156,7 @@ body {
   outline: none;
   transform: none;
   cursor: pointer;
-  z-index: 1000000;
+  z-index: 3;
 }
 svg{
   fill: #797979;

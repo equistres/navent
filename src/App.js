@@ -12,18 +12,29 @@ class App extends Component {
     super(props);
 
     let like = null;
+    let initialPrice = null;
+    let initialCalc = null;
     if (localStorage.getItem("liked") === "true") {
       like = true;
     } else {
       like = false;
     }
+    if (localStorage.getItem("initialPrice") === null) {
+      initialPrice = "1.400.000";
+      initialCalc = "3.684";
+    } else {
+      initialPrice = localStorage.getItem("initialPrice");
+      initialCalc = localStorage.getItem("initialCalc");
+    }
     this.state = {
+      initialPrice: initialPrice,
+      initialCalc: initialCalc,
       liked: like,
       showModal: false,
       imagesIndex: 0,
       imagesSources: {
-          0: "https://imgar.zonapropcdn.com/avisos/1/00/44/82/57/21/360x266/1698490754.jpg",
-          1: "https://imgar.zonapropcdn.com/avisos/1/00/44/82/57/21/360x266/1698490759.jpg",
+          0: "https://imgar.zonapropcdn.com/avisos/1/00/44/82/57/21/360x266/1698490759.jpg",
+          1: "https://imgar.zonapropcdn.com/avisos/1/00/44/82/57/21/360x266/1698490754.jpg",
           2: "https://imgar.zonapropcdn.com/avisos/1/00/44/82/57/21/360x266/1698490765.jpg",
           3: "https://imgar.zonapropcdn.com/avisos/1/00/44/82/57/21/360x266/1698490767.jpg"
       }
@@ -53,6 +64,8 @@ class App extends Component {
     let pricem2 = this.formatNumber(parseInt(value / 380, 10))
     if (pricem2 !== "NaN") {
       document.getElementById("pricem2").innerHTML = pricem2;
+      localStorage.setItem("initialPrice", e.target.value)
+      localStorage.setItem("initialCalc", pricem2)
     }
   }
 
@@ -78,7 +91,6 @@ class App extends Component {
     {
       currentIndex--
     }
-    console.log(currentIndex)
     this.setState({
       imagesIndex: currentIndex
     })
@@ -100,17 +112,16 @@ class App extends Component {
         <div className="container">
           <div className="multimedia">
             <img src={this.state.imagesSources[this.state.imagesIndex]} alt="" />
-            <span class="arrow-button left" type="button" onClick={this.galleryHandler} id="m">
-              <svg class="button-icon" viewBox="0 0 100 100" id="m">
-                <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow"></path>
+            <span className="arrow-button left" type="button" onClick={this.galleryHandler} id="m">
+              <svg className="button-icon" viewBox="0 0 100 100" id="m">
+                <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" className="arrow"></path>
               </svg>
             </span>
-            <span class="arrow-button right" type="button" onClick={this.galleryHandler} id="s">
-              <svg class="button-icon" viewBox="0 0 100 100" id="s">
-                <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) " />
+            <span className="arrow-button right" type="button" onClick={this.galleryHandler} id="s">
+              <svg className="button-icon" viewBox="0 0 100 100" id="s">
+                <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" className="arrow" transform="translate(100, 100) rotate(180) " />
               </svg>
             </span>
-
             {liked}
             <div className="label">Super Destacado</div>
           </div>
@@ -125,11 +136,11 @@ class App extends Component {
               <div className="profit" >
                 <span className="currency">U$S</span>
                 <ContentEditable
-                  html="1.400.000"
+                  html={this.state.initialPrice}
                   className="content-editable"
                   onChange={this.changeHandler}
                 />
-                <span className="blue">$/m </span><span className="blue" id="pricem2">3.684</span>
+                <span className="blue">$/m </span><span className="blue" id="pricem2">{this.state.initialCalc}</span>
               </div>
             </div>
             <div className="additional">
